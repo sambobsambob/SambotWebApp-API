@@ -9,6 +9,8 @@ package com.api.app.web.sambot.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,6 +23,9 @@ import com.api.app.web.sambot.security.utils.JwtUserDetailsService;
 
 @RestController
 public class AuthenticationController {
+	
+	@Autowired
+	private AuthenticationManager authenticationManager;
 
 	@Autowired
 	private JwtTokenUtil jwtTokenUtil;
@@ -41,7 +46,12 @@ public class AuthenticationController {
 	}
 	
 	private boolean authenticate(String username, String password) {
-		return true;
+		try {
+			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+			return true;
+		} catch(Exception e) {
+			return false;
+		}
 	}
 	
 	@PostMapping("/isValidToken")
