@@ -9,9 +9,10 @@ package com.api.app.web.sambot.repos;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.api.app.web.sambot.dao.UserDetails;
+import com.api.app.web.sambot.model.UserDetailsEntity;
+
 
 @Repository
-public interface UserDetailsRepository extends JpaRepository<UserDetails, String> {
+public interface UserDetailsRepository extends JpaRepository<UserDetailsEntity, String> {
 
 }
