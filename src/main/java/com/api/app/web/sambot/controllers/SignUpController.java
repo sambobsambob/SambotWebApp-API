@@ -6,8 +6,11 @@
  **************************************************************************/
 package com.api.app.web.sambot.controllers;
 
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,21 +25,31 @@ public class SignUpController {
 	@Autowired
 	UserDetailsRepository userDetailsRepository;
 
+	@Autowired
+	private PasswordEncoder bcryptEncoder;
+
 	@PostMapping("/signUp")
-	public HttpStatus signUp(@RequestBody SignUpRequest signUpRequest) {
-		System.out.println(signUpRequest.getUsername());
-		try {
-			UserDetailsEntity userDetails = new UserDetailsEntity(  
-					signUpRequest.getUsername(),
-					signUpRequest.getEmail(),
-					signUpRequest.getPassword(),
-					signUpRequest.getVerified(),
-					signUpRequest.getPremium(),
-					signUpRequest.getPremiumExpires());
-			userDetailsRepository.save(userDetails);
-			return HttpStatus.OK;
-		} catch (Exception e) {
-			return HttpStatus.INTERNAL_SERVER_ERROR;
+	public ResponseEntity<String> signUp(@RequestBody SignUpRequest signUpRequest) {
+		boolean usernameExists = userDetailsRepository.findByUsername(signUpRequest.getUsername()) != null;
+		boolean emailExists = userDetailsRepository.findByEmail(signUpRequest.getEmail()) != null;
+		if (!usernameExists && !emailExists) {
+			Date date = new Date();
+			try {
+				String password = bcryptEncoder.encode(signUpRequest.getPassword());
+				UserDetailsEntity userDetails = new UserDetailsEntity(  
+						signUpRequest.getUsername(),
+						signUpRequest.getEmail(),
+						password,
+						false,
+						false,
+						date.getTime());
+				userDetailsRepository.save(userDetails);
+				return ResponseEntity.ok().build();
+			} catch (Exception e) {
+				return ResponseEntity.status(500).build();
+			}
+		} else {
+			return ResponseEntity.status(403).build();
 		}
 	}
 

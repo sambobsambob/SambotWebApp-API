@@ -41,7 +41,7 @@ public class AuthenticationController {
 			final String token = jwtTokenUtil.generateToken(userDetails);
 			return ResponseEntity.ok(new JwtResponse(token));
 		} else {
-			return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Invalid Credentials");
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid Credentials");
 		}
 	}
 	
@@ -55,7 +55,7 @@ public class AuthenticationController {
 	}
 	
 	@PostMapping("/isValidToken")
-	public ResponseEntity<?> validateToken(@RequestBody JwtResponse jwtResponse) {
+	public ResponseEntity<String> validateToken(@RequestBody JwtResponse jwtResponse) {
 		Boolean validToken = jwtTokenUtil.validateToken(jwtResponse.getToken());
 		if (Boolean.TRUE.equals(validToken)) {
 			return ResponseEntity.status(HttpStatus.OK).body("Valid Token");

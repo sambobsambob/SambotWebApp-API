@@ -41,4 +41,12 @@ public class UserDetailsEntity {
 		this.premium = premium;
 		this.premium_expires = premium_expires;
 	}
+	
+	public String getUsername() {
+		return username;
+	}
+	
+	public String getPassword() {
+		return password;
+	}
 }

@@ -13,19 +13,21 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import com.api.app.web.sambot.model.UserDetailsEntity;
+import com.api.app.web.sambot.repos.UserDetailsRepository;
 
 @Service
 public class JwtUserDetailsService implements UserDetailsService {
 	
 	@Autowired
-	private PasswordEncoder bcryptEncoder;
+	UserDetailsRepository userDetailsRepository;
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		String password = bcryptEncoder.encode("test");
-		return new User(username, password, new ArrayList<>());
+		UserDetailsEntity userDetailsEntity = userDetailsRepository.findByUsername(username);
+		return new User(userDetailsEntity.getUsername(), userDetailsEntity.getPassword(), new ArrayList<>());
 	}
 
 }

@@ -15,4 +15,6 @@ import com.api.app.web.sambot.model.UserDetailsEntity;
 @Repository
 public interface UserDetailsRepository extends JpaRepository<UserDetailsEntity, String> {
 
+	UserDetailsEntity findByUsername(String username);
+	UserDetailsEntity findByEmail(String email);
 }
