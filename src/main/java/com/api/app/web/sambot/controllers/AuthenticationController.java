@@ -34,14 +34,14 @@ public class AuthenticationController {
 	private JwtUserDetailsService userDetailsService;
 	
 	@PostMapping("/authenticate")
-	public ResponseEntity<?> authenticateUser(@RequestBody JwtRequest authenticationRequest) {
+	public ResponseEntity<JwtResponse> authenticateUser(@RequestBody JwtRequest authenticationRequest) {
 		Boolean validCredentials = authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
 		if (Boolean.TRUE.equals(validCredentials)) {
 			final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
 			final String token = jwtTokenUtil.generateToken(userDetails);
 			return ResponseEntity.ok(new JwtResponse(token));
 		} else {
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid Credentials");
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 		}
 	}
 	
