@@ -24,6 +24,8 @@ public class UserDetailsEntity {
 	@NotEmpty
 	private String password;
 	@NotNull
+	private boolean admin;
+	@NotNull
 	private boolean verified;
 	@NotNull
 	private boolean premium;
@@ -33,10 +35,11 @@ public class UserDetailsEntity {
 	public UserDetailsEntity() {
 	}
 
-	public UserDetailsEntity(String username, String email, String password, boolean verified, boolean premium, long premium_expires) {
+	public UserDetailsEntity(String username, String email, String password, boolean admin, boolean verified, boolean premium, long premium_expires) {
 		this.username = username;
 		this.email = email;
 		this.password = password;
+		this.admin = admin;
 		this.verified = verified;
 		this.premium = premium;
 		this.premium_expires = premium_expires;

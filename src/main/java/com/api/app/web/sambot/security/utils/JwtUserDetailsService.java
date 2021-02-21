@@ -22,7 +22,7 @@ import com.api.app.web.sambot.repos.UserDetailsRepository;
 public class JwtUserDetailsService implements UserDetailsService {
 	
 	@Autowired
-	UserDetailsRepository userDetailsRepository;
+	private UserDetailsRepository userDetailsRepository;
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

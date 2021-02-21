@@ -59,7 +59,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		httpSecurity.cors()
 			.and()
 			.csrf().disable()//Disabled as using auth token in header, this prevents csrf
-			.authorizeRequests().antMatchers("/authenticate", "/isValidToken", "/signUp").permitAll()
+			.authorizeRequests().antMatchers("/authenticate", "/isValidToken", "/signUp", "/getDiscordBotGuildCount").permitAll()
 			.anyRequest().authenticated()
 			.and()
 			.exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)

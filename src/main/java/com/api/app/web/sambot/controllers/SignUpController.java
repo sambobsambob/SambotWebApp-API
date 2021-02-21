@@ -23,7 +23,7 @@ import com.api.app.web.sambot.requests.SignUpRequest;
 public class SignUpController {
 
 	@Autowired
-	UserDetailsRepository userDetailsRepository;
+	private UserDetailsRepository userDetailsRepository;
 
 	@Autowired
 	private PasswordEncoder bcryptEncoder;
@@ -40,6 +40,7 @@ public class SignUpController {
 						signUpRequest.getUsername(),
 						signUpRequest.getEmail(),
 						password,
+						false,
 						false,
 						false,
 						date.getTime());
